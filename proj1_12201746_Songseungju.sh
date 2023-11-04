@@ -96,7 +96,6 @@ do
                 for movie_id in {1..1682}; do
                     user_ratings=$(awk -F'\t' -v movie_id="$movie_id" '$2 == movie_id { print $3 }' u.data)
 
-                    # 영화에 대한 rating이 없는 경우 건너뜁니다.
                     if [ -n "$user_ratings" ]; then
                         user_ids=$(awk -F'\t' -v movie_id="$movie_id" '$2 == movie_id { print $1 }' u.data)
                         
