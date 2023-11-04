@@ -107,19 +107,16 @@ do
                             user_age=$(awk -F'|' -v user_id="$user_id" '$1 == user_id { print $2 }' u.user)
                             user_occupation=$(awk -F'|' -v user_id="$user_id" '$1 == user_id { print $4 }' u.user)
                             
-                            # 유저의 나이가 20살 이상 29살 이하이고 직업이 programmer인 경우에만 계산합니다.
                             if [ "$user_age" -ge 20 ] && [ "$user_age" -le 29 ] && [ "$user_occupation" == "programmer" ]; then
                                 user_rating=$(awk -F'\t' -v movie_id="$movie_id" -v user_id="$user_id" '$2 == movie_id && $1 == user_id { print $3 }' u.data)
-                                total_rating=$(echo "scale=6; $total_rating + $user_rating" | bc)  # 누적 rating 합산
-                                num_ratings=$((num_ratings + 1))  # 유저 수 증가
+                                total_rating=$(echo "scale=6; $total_rating + $user_rating" | bc)
+                                num_ratings=$((num_ratings + 1))
                             fi
                         done
                         
-                        # 모든 유저의 rating을 평균 계산
                         if [ "$num_ratings" -gt 0 ]; then
-                            average_rating=$(echo "scale=6; $total_rating / $num_ratings" | bc)  # 6자리 소수점 계산
+                            average_rating=$(echo "scale=6; $total_rating / $num_ratings" | bc) 
                             
-                            # 소수점 6번째에서 반올림
                             average_rating=$(printf "%.6f" "$average_rating")
                             
                             echo "$movie_id $average_rating"
